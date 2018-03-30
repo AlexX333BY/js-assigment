@@ -38,8 +38,8 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-	let arr = Array(len);
-	return arr.map((elem, index) => (2*index+1));
+	//return new Array(len).map((elem, index) => 2*index+1);
+	return Array.from({length: len}, (elem, index) => 2*index+1);
 }
 
 /**
