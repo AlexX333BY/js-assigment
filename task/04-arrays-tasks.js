@@ -271,7 +271,7 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-   throw new Error('Not implemented');
+	return Array.from(arr.map((el, index) => new Array(index + 1).fill(el)).join()).filter(el => el !== ',');
 }
 
 
@@ -374,8 +374,7 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-	//return arr.filter((element) => element == false).length;
-	throw new Error('Not implemented');
+	return arr.filter((element) => element == false).length;
 }
 
 /**
@@ -438,10 +437,18 @@ function toStringList(arr) {
  */
 function sortCitiesArray(arr) {
 	return arr.sort((a, b) => {
-		if (a.country === b.country) {
-			return a.city - b.city;
+		if (a['country'] === b['country']) {
+			if (a['city'] > b['city']) {
+				return 1;
+			} else {
+				return -1;
+			}
 		} else {
-			return a.country - b.country;
+			if (a['country'] > b['country']) {
+				return 1;
+			} else {
+				return -1;
+			}
 		}
 	});
 }
