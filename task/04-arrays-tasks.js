@@ -289,7 +289,7 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-   throw new Error('Not implemented');
+	return arr.sort((a, b) => b - a).slice(0, 3);
 }
 
 
@@ -307,7 +307,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-   throw new Error('Not implemented');
+	return arr.filter(el => ((typeof el === 'number') || (el instanceof Number)) && (el > 0)).length;
 }
 
 /**
@@ -324,7 +324,24 @@ function getPositivesCount(arr) {
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
 function sortDigitNamesByNumericOrder(arr) {
-   throw new Error('Not implemented');
+	return arr.sort((a, b) => {
+		let getRealNumF = function(strNum) {
+			switch (strNum) {
+				case 'zero': return 0;
+				case 'one': return 1;
+				case 'two': return 2;
+				case 'three': return 3;
+				case 'four': return 4;
+				case 'five': return 5;
+				case 'six': return 6;
+				case 'seven': return 7;
+				case 'eight': return 8;
+				case 'nine': return 9;
+				default: return undefined;
+			}
+		}
+		return getRealNumF(a) - getRealNumF(b);
+	});
 }
 
 /**
@@ -340,7 +357,8 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-   throw new Error('Not implemented');
+	if (arr.length == 0) return 0;
+	return arr.reduce((accumulator, currentValue) => accumulator + currentValue);
 }
 
 /**
@@ -356,7 +374,8 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-   throw new Error('Not implemented');
+	//return arr.filter((element) => element == false).length;
+	throw new Error('Not implemented');
 }
 
 /**
@@ -374,7 +393,7 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurences(arr, item) {
-   throw new Error('Not implemented');
+	return arr.filter(el => el === item).length;
 }
 
 /**
@@ -389,7 +408,7 @@ function findAllOccurences(arr, item) {
  *    ['rock', 'paper', 'scissors']     => 'rock,paper,scissors'
  */
 function toStringList(arr) {
-   throw new Error('Not implemented');
+	return arr.join();
 }
 
 
@@ -418,7 +437,13 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  */
 function sortCitiesArray(arr) {
-   throw new Error('Not implemented');
+	return arr.sort((a, b) => {
+		if (a.country === b.country) {
+			return a.city - b.city;
+		} else {
+			return a.country - b.country;
+		}
+	});
 }
 
 /**
