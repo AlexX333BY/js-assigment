@@ -593,15 +593,7 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-	let somef = function(accum, value) {
-		if (accum === undefined) accum = Array();
-		if (Array.isArray(value)) {
-			return accum.concat(value.reduce(somef)), [];
-		} else {
-			return accum.concat(value), [];
-		}
-	};
-	return arr.reduce(somef)
+	return arr.join().split(',')[indexes.reduce((accumulator, value) => accumulator + value)];
 }
 
 
