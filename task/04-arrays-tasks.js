@@ -547,7 +547,18 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-   throw new Error('Not implemented');
+	let map = new Map();
+   array.map(el => new Array(keySelector(el), valueSelector(el))).map((el) => {
+   		if (map.has(el[0])) {
+   			map.set(el[0], map.get(el[0]).concat(el[1]));
+   		} else {
+   			let arr = Array(1);
+   			arr[0] = el[1];
+   			map.set(el[0], arr);
+   		}
+   		return el;
+   });
+   return map;
 }
 
 /**
@@ -563,9 +574,9 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-	let newArr = [];
-	arr.map((el) => newArr = newArr.concat(el));
-	return Array.from(newArr, childrenSelector);
+	let newArr = Array();
+	arr.map(childrenSelector).map((el) => newArr = newArr.concat(el));
+	return newArr;
 }
 
 /**
@@ -582,7 +593,15 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-    throw new Error('Not implemented');
+	let somef = function(accum, value) {
+		if (accum === undefined) accum = Array();
+		if (Array.isArray(value)) {
+			return accum.concat(value.reduce(somef)), [];
+		} else {
+			return accum.concat(value), [];
+		}
+	};
+	return arr.reduce(somef)
 }
 
 
@@ -605,7 +624,14 @@ function getElementByIndexes(arr, indexes) {
  *
  */
 function swapHeadAndTail(arr) {
-    throw new Error('Not implemented');
+	let halfLen = Math.trunc(arr.length / 2);
+	let firstHalf = arr.slice(0, halfLen);
+	let lastHalf = arr.slice(arr.length - halfLen);
+	if (arr.length % 2 == 0) {
+		return lastHalf.concat(firstHalf);
+	} else {
+		return lastHalf.concat(arr[halfLen]).concat(firstHalf);
+	}
 }
 
 
