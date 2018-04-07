@@ -134,7 +134,14 @@ function isTriangle(a,b,c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-    throw new Error('Not implemented');
+	if (((rect2.top >= rect1.top) && (rect2.top <= (rect1.top + rect1.width))
+		 && (rect2.left >= rect1.left) && (rect2.left <= (rect1.left + rect1.height)))
+		|| ((rect1.top >= rect2.top) && (rect1.top <= (rect2.top + rect2.width))
+		 && (rect1.left >= rect2.left) && (rect1.left <= (rect2.left + rect2.height)))) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 
@@ -165,7 +172,12 @@ function doRectanglesOverlap(rect1, rect2) {
  *
  */
 function isInsideCircle(circle, point) {
-    throw new Error('Not implemented');
+	let centerToPointDist = Math.sqrt(Math.pow(circle.center.x - point.x, 2) + Math.pow(circle.center.y - point.y, 2));
+	if (centerToPointDist >= circle.radius) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 
@@ -207,7 +219,9 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+	let minVal = Math.min(a, b);
+	let maxVal = Math.max(a, b);
+	return (isStartIncluded ? '[' : '(') + minVal + ', ' + maxVal + (isEndIncluded ? ']' : ')');
 }
 
 
@@ -224,7 +238,10 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+	let result = str[str.length - 1];
+	for (let i = str.length - 2; i >= 0; i--)
+		result = result.concat(str[i]);
+	return result;
 }
 
 
@@ -241,7 +258,9 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+	let str = new String(num);
+	let result = reverseString(str);
+	return Number.parseInt(result);
 }
 
 
@@ -251,7 +270,7 @@ function reverseInteger(num) {
  *
  * Описание алгоритма по ссылке : https://en.wikipedia.org/wiki/Luhn_algorithm
  *
- * @param {number} cnn
+ * @param {number} ccn
  * @return {boolean}
  *
  * @example:
@@ -266,7 +285,21 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+	ccn = new String(ccn);
+	let sum = Number.parseInt(ccn[ccn.length-1]);
+	let nDigits = ccn.length;
+	let parity = nDigits % 2;
+	for (let i = 0; i < nDigits - 1; i++) {
+		let digit = Number.parseInt(ccn[i]);
+		if (i % 2 == parity) {
+		    digit *= 2;
+		}
+		if (digit > 9) {
+		    digit -= 9;
+		} 
+		sum += digit;
+	}
+	return (sum % 10) == 0;
 }
 
 
@@ -285,7 +318,17 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+	let sum = 0;
+	do {
+		sum = 0;
+		let numLength = new String(num).length;
+		for (let i = 0; i < numLength; i++) {
+			sum += num % 10;
+			num /= 10;
+		}
+		num = sum;
+	} while (new String(num).length > 1);
+	return sum;
 }
 
 
