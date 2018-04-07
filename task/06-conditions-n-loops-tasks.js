@@ -431,7 +431,31 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    throw new Error('Not implemented');
+	let datesDif = endDate - startDate;
+	let seconds = datesDif / 1000, minutes = datesDif / 60000, hours = datesDif / 3600000, days = datesDif / 86400000;
+	if (seconds <= 45) {
+		return 'a few seconds ago';
+	} else if (seconds <= 90) {
+		return 'a minute ago';
+	} else if (minutes <= 45) {
+		return new String((seconds % 60 == 30) ? Math.floor(minutes) : Math.round(minutes)).concat(' minutes ago');
+	} else if (minutes <= 90) {
+		return 'an hour ago';
+	} else if (hours <= 22) {
+		return new String((minutes % 60 == 30) ? Math.floor(hours) : Math.round(hours)).concat(' hours ago');
+	} else if (hours <= 36) {
+		return 'a day ago';
+	} else if (days <= 25) {
+		return new String((hours % 24 == 12) ? Math.floor(days) : Math.round(days)).concat(' days ago');
+	} else if (days <= 45) {
+		return 'a month ago';
+	} else if (days <= 345) {
+		return new String(Math.round(days / 30)).concat(' months ago');
+	} else if (days <= 545) {
+		return 'a year ago';
+	} else {
+		return new String(Math.round(days / 360)).concat(' years ago');
+	}
 }
 
 /**
@@ -471,7 +495,13 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+    let dirs = Array(pathes.length);
+    for (let i = 0; i < pathes.length; i++) {
+    	dirs[i] = pathes[i].split('/');
+    }
+    let commonDir = '/';
+    for (let i = 0; i < dirs[0].length; i++) {
+    	//
 }
 
 
