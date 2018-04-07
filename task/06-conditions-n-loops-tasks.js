@@ -193,7 +193,19 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    throw new Error('Not implemented');
+	let isSingle;
+	for (let i = 0; i < str.length; i++) {
+		isSingle = true;
+		for (let j = 0; j < str.length; j++) {
+			if ((str[i] == str[j]) && (i != j)) {
+				isSingle = false;
+			}
+		}
+		if (isSingle) {
+			return str[i];
+		}
+	}
+	return null;
 }
 
 
@@ -324,7 +336,7 @@ function getDigitalRoot(num) {
 		let numLength = new String(num).length;
 		for (let i = 0; i < numLength; i++) {
 			sum += num % 10;
-			num /= 10;
+			num = Math.floor(num / 10);
 		}
 		num = sum;
 	} while (new String(num).length > 1);
@@ -355,7 +367,35 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+	let bktMap = Array();
+	bktMap[']'] = '[';
+	bktMap[')'] = '(';
+	bktMap['}'] = '{';
+	bktMap['>'] = '<';
+    let bktArr = Array();
+    for (let i = 0; i < str.length; i++) {
+    	switch (str[i]) {
+    		case '[':
+    		case '(':
+    		case '{':
+    		case '<':
+    			bktArr.push(str[i]);
+    			break;
+    		case ']':
+    		case ')':
+    		case '}':
+    		case '>':
+    			if ((bktArr.length > 0) && (bktArr[bktArr.length - 1] == bktMap[str[i]])) {
+    				bktArr.pop();
+    			} else {
+    				return false;
+    			}
+    			break;
+    		default:
+    			break;
+    	}
+    }
+    return bktArr.length == 0;
 }
 
 
@@ -414,7 +454,7 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+	return num.toString(n);
 }
 
 
