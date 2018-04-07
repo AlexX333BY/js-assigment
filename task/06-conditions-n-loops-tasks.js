@@ -372,30 +372,30 @@ function isBracketsBalanced(str) {
 	bktMap[')'] = '(';
 	bktMap['}'] = '{';
 	bktMap['>'] = '<';
-    let bktArr = Array();
-    for (let i = 0; i < str.length; i++) {
-    	switch (str[i]) {
-    		case '[':
-    		case '(':
-    		case '{':
-    		case '<':
-    			bktArr.push(str[i]);
-    			break;
-    		case ']':
-    		case ')':
-    		case '}':
-    		case '>':
-    			if ((bktArr.length > 0) && (bktArr[bktArr.length - 1] == bktMap[str[i]])) {
-    				bktArr.pop();
-    			} else {
-    				return false;
-    			}
-    			break;
-    		default:
-    			break;
-    	}
-    }
-    return bktArr.length == 0;
+	let bktArr = Array();
+	for (let i = 0; i < str.length; i++) {
+		switch (str[i]) {
+			case '[':
+			case '(':
+			case '{':
+			case '<':
+				bktArr.push(str[i]);
+				break;
+			case ']':
+			case ')':
+			case '}':
+			case '>':
+				if ((bktArr.length > 0) && (bktArr[bktArr.length - 1] == bktMap[str[i]])) {
+					bktArr.pop();
+				} else {
+					return false;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	return bktArr.length == 0;
 }
 
 
