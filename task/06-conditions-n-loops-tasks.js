@@ -501,7 +501,14 @@ function getCommonDirectoryPath(pathes) {
     }
     let commonDir = '/';
     for (let i = 0; i < dirs[0].length; i++) {
-    	//
+    	for (let j = 1; j < dirs.length; j++) {
+    		if (dirs[0][i] != dirs[j][i]) {
+    			return commonDir;
+    		}
+    	}
+    	commonDir = commonDir.concat(dirs[0][i], '/');
+    }
+    return commonDir;
 }
 
 
