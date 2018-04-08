@@ -119,20 +119,6 @@ function* depthTraversalTree(root) {
 			}
 		}
 	}
-    /*let recTree = (node) => {
-    	let result = [node];
-    	if ('children' in node) {
-			for (let i = 0; i < node.children.length; i++) {
-				result = result.concat(recTree(node.children[i]));
-			}
-		}
-    	return result;
-    };
-    let treeArray = recTree(root);
-    for (let i = 0; i < treeArray.length; i++) {
-    	yield treeArray[i];
-    }*/
-    //throw new Error('Not implemented');
 }
 
 
