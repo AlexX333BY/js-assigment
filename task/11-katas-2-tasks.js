@@ -34,7 +34,37 @@
  *
  */
 function parseBankAccount(bankAccount) {
-    throw new Error('Not implemented');
+	let numAssocArray = Array(10);
+	for (let i = 0; i < numAssocArray.length; i++) {
+		numAssocArray[i] = Array(3);
+	}
+	let tpl1 = ' _     _  _     _  _  _  _  _ ';
+	let tpl2 = '| |  | _| _||_||_ |_   ||_||_|';
+	let tpl3 = '|_|  ||_  _|  | _||_|  ||_| _|';
+	for (let i = 0; i < numAssocArray.length; i++) {
+		numAssocArray[i][0] = tpl1.substr(i * 3, 3);
+		numAssocArray[i][1] = tpl2.substr(i * 3, 3);
+		numAssocArray[i][2] = tpl3.substr(i * 3, 3);
+	}
+	
+	let lines = bankAccount.split('\n');
+	let strNumStorage = Array(3);
+	let num = 0;
+	let index;
+	for (let i = 0; i < lines[0].length; i += 3) {
+		for (let j = 0; j < strNumStorage.length; j++) {
+			strNumStorage[j] = lines[j].substr(i, 3);
+		}
+		for (let j = 0; j < numAssocArray.length; j++) {
+			if ((strNumStorage[0] == numAssocArray[j][0])
+				&& (strNumStorage[1] == numAssocArray[j][1])
+				&& (strNumStorage[2] == numAssocArray[j][2])) {
+				index = j;
+			}
+		}
+		num = num * 10 + index;
+	}
+	return num;
 }
 
 
