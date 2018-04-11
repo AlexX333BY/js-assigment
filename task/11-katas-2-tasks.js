@@ -93,7 +93,15 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
-    throw new Error('Not implemented');
+	let words = text.split(' ');
+	let line;
+	while (words.length > 0) {
+		line = words.shift();
+		while ((words.length > 0) && (line.length + words[0].length < columns)) {
+			line += ' ' + words.shift();
+		}
+		yield line;
+	}
 }
 
 
@@ -130,8 +138,154 @@ const PokerRank = {
     HighCard: 0
 }
 
+function IsStraight(cards) {
+	let values = Array();
+	for (let card of cards) {
+		switch (card['name']) {
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '10':
+				values.push(Number.parseInt(card['name']));
+				break;
+			case 'J':
+				values.push(11);
+				break;
+			case 'Q':
+				values.push(12);
+				break;
+			case 'K':
+				values.push(13);
+				break;
+		}
+	}
+	values = values.sort((a, b) => a > b);
+	let areInStraightOrder = true;
+	for (let i = 1; i < values.length; i++) {
+		if (values[i] - values[i - 1] != 1) {
+			areInStraightOrder = false;
+		}
+	}
+	if (!areInStraightOrder) {
+		return false;
+	}
+	if (values.length == 5) {
+		return true;
+	}
+	if ((values[0] == 2) || (values[values.length - 1] == 13)) {
+		return true;
+	}
+}
+
+function IsFlush(cards) {
+	for (let i = 1; i < cards.length; i++) {
+		if (cards[0]['suit'] != cards[i]['suit']) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function IsStraightFlush(cards) {
+	
+	return IsFlush(cards) && IsStraight(cards);
+}
+
+function IsFullHouse(cards) {
+	let counter = 0;
+	let remainingCards;
+	for (let i = 0; (i < cards.length - 2) && (counter != 3); i++) {
+		counter = 1;
+		for (let j = i + 1; j < cards.length; j++) {
+			if (cards[i]['name'] == cards[j]['name']) {
+				counter++;
+			}
+		}
+		if (counter == 3) {
+			remainingCards = cards.filter((card) => card['name'] != cards[i]['name']);
+		}
+	}
+	if ((counter == 3) && (remainingCards[0]['name'] == remainingCards[1]['name'])) {
+		return true;
+	}
+	return false;
+}
+
+function ParseCard(card) {
+	let matched = card.match(/([JQKA\d]+)(.+)/);
+	let result = new Array();
+	result['name'] = matched[1];
+	result['suit'] = matched[2];
+	return result;
+}
+
+function GetMaxOfKind(cards) {
+	let oneOfKindArray = new Array();
+	let maxOfKind = 0;
+	for (let card of cards) {
+		if (oneOfKindArray[card['name']] === undefined) {
+			oneOfKindArray[card['name']] = 1;
+		} else {
+			oneOfKindArray[card['name']]++;
+		}
+		maxOfKind = Math.max(maxOfKind, oneOfKindArray[card['name']]);
+	}
+	return maxOfKind;
+}
+
+function GetPairsCount(cards) {
+	let nameCountArray = Array();
+	let numOfPairs = 0;
+	for (let card of cards) {
+		if (nameCountArray[card['name']] === undefined) {
+			nameCountArray[card['name']] = 1;
+		} else {
+			if (++nameCountArray[card['name']] == 2) {
+				numOfPairs++;
+			}
+		}
+	}
+	return numOfPairs;
+}
+
 function getPokerHandRank(hand) {
-    throw new Error('Not implemented');
+	let cards = new Array(hand.length);
+	for (let i = 0; i < hand.length; i++) {
+		cards[i] = ParseCard(hand[i]);
+	}
+	let maxOfKind = GetMaxOfKind(cards);
+	let pairs = GetPairsCount(cards);
+	if (IsStraightFlush(cards)) {
+		return PokerRank.StraightFlush;
+	}
+	if (maxOfKind == 4) {
+		return PokerRank.FourOfKind;
+	}
+	if (IsFullHouse(cards)) {
+		return PokerRank.FullHouse;
+	}
+	if (IsFlush(cards)) {
+		return PokerRank.Flush;
+	}
+	if (IsStraight(cards)) {
+		return PokerRank.Straight;
+	}
+	if (maxOfKind == 3) {
+		return PokerRank.ThreeOfKind;
+	}
+	if (pairs == 2) {
+		return PokerRank.TwoPairs;
+	}
+	if (pairs == 1) {
+		return PokerRank.OnePair;
+	}
+	return PokerRank.HighCard;
 }
 
 
@@ -166,7 +320,53 @@ function getPokerHandRank(hand) {
  *    '+-------------+\n'
  */
 function* getFigureRectangles(figure) {
-   throw new Error('Not implemented');
+    let figureArr = figure.split('\n');
+    let rectangle;
+    for (let i = 0; i < figureArr.length; i++) {
+        for (let j = 0; j < figureArr[i].length; j++) {
+            if (figureArr[i][j] == '+') {
+                rectangle = GetRectangle(figureArr, i, j);
+                if (rectangle != null) {
+                    yield DrawRectangle(rectangle[1], rectangle[0])
+                }
+            }
+        }
+    }
+}
+
+function GetRectangle(figure, row, column) {
+	for (let i = row + 1; i < figure.length; i++) {
+		if (figure[i][column] == '+') {
+			for (let j = column + 1; j < figure[row].length; j++) {
+				if (figure[i][j] == "+") {
+					if (figure[row][j] == "+") {
+						let flag = true;
+						for (let k = row + 1; k < i; k++) {
+							if (figure[k][j] != '|') {
+								flag = false;
+								break;
+							}
+						}
+						if (flag) {
+							return [i - row + 1, j - column + 1];
+						}
+					}
+				} else if (figure[i][j] != '-') {
+					break;
+				}
+			}
+		}
+		else if (figure[i][column] != '|') {
+			break;
+		}
+	}
+	return null;
+	}
+	
+function DrawRectangle(width, height) {
+	return '+' + '-'.repeat(width - 2) + '+\n'
+		   + ('|' + ' '.repeat(width - 2) + '|\n').repeat(height - 2)
+		   + '+' + '-'.repeat(width - 2) + '+\n';
 }
 
 
