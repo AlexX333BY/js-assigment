@@ -203,12 +203,12 @@ function canDominoesMakeRow(dominoes) {
     	for (let value of domino) {
     		valuesCount[value] = valuesCount[value] + 1;
     	}
-    	if (domino[0] = domino[1]) {
+    	if (domino[0] == domino[1]) {
     		doubleExists[domino[0]] = true;
     	}
     }
-    for (let i = 0; i < 8; i++) {
-    	if (((valuesCount[i] % 2) == 0) && doubleExists[i]) {
+    for (let i = 0; i < doubleExists.length; i++) {
+    	if ((valuesCount[i] == 2) && doubleExists[i]) {
     		return false
     	}
     }
