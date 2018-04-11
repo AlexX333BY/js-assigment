@@ -320,18 +320,18 @@ function getPokerHandRank(hand) {
  *    '+-------------+\n'
  */
 function* getFigureRectangles(figure) {
-    let figureArr = figure.split('\n');
-    let rectangle;
-    for (let i = 0; i < figureArr.length; i++) {
-        for (let j = 0; j < figureArr[i].length; j++) {
-            if (figureArr[i][j] == '+') {
-                rectangle = GetRectangle(figureArr, i, j);
-                if (rectangle != null) {
-                    yield DrawRectangle(rectangle[1], rectangle[0])
-                }
-            }
-        }
-    }
+	let figureArr = figure.split('\n');
+	let rectangle;
+	for (let i = 0; i < figureArr.length; i++) {
+		for (let j = 0; j < figureArr[i].length; j++) {
+			if (figureArr[i][j] == '+') {
+				rectangle = GetRectangle(figureArr, i, j);
+				if (rectangle != null) {
+					yield DrawRectangle(rectangle[1], rectangle[0]);
+				}
+			}
+		}
+	}
 }
 
 function GetRectangle(figure, row, column) {
@@ -361,7 +361,7 @@ function GetRectangle(figure, row, column) {
 		}
 	}
 	return null;
-	}
+}
 	
 function DrawRectangle(width, height) {
 	return '+' + '-'.repeat(width - 2) + '+\n'
